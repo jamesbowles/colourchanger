@@ -13,8 +13,15 @@ function setColour() {
 }
 
 function sayColour(colour) {
-  let utterance = new SpeechSynthesisUtterance(colour);
-  speechSynthesis.speak(utterance);
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  if (isIOS) {
+    const speechSynthesizer = new AVSpeechSynthesizer();
+    const speechUtterance = new AVSpeechUtterance(colour);
+    speechSynthesizer.speakUtterance(speechUtterance);
+  } else {
+    let utterance = new SpeechSynthesisUtterance(colour);
+    speechSynthesis.speak(utterance);
+  }
 }
 
 function nextSpeed(speed) {
